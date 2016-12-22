@@ -143,4 +143,8 @@ class Category
     {
         return $this->task;
     }
+
+    public function __toString() {
+        return $this->name;
+    }
 }
