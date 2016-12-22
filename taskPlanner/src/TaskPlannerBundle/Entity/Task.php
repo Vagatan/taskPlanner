@@ -12,6 +12,29 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="task")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="task")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
+     */
+    private $comments;
+
+
+
+
+
     /**
      * @var int
      *

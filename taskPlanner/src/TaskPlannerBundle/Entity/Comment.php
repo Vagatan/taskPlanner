@@ -12,6 +12,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
+
+
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Task", inversedBy="Comments")
+     * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
+     */
+    private $task;
+
+
+
+
+
+
     /**
      * @var int
      *

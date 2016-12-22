@@ -20,4 +20,19 @@ class User extends BaseUser
     {
         parent::__construct();
     }
+
+
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
+     */
+    private $task;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="user")
+     */
+    private $category;
+
+
 }
