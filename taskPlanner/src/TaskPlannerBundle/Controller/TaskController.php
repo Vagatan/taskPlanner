@@ -45,6 +45,7 @@ class TaskController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $task->setUser($this->getUser());
             $em->persist($task);
             $em->flush($task);
 
@@ -55,6 +56,7 @@ class TaskController extends Controller
             'task' => $task,
             'form' => $form->createView(),
         ));
+
     }
 
     /**
@@ -133,4 +135,6 @@ class TaskController extends Controller
             ->getForm()
         ;
     }
+
+
 }
