@@ -7,6 +7,13 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <a href="{{ path('category_index') }}">{{ path('category_index') }}</a>
+        <a href="{{ path('task_index') }}">{{ path('task_index') }}</a>
+        <a href="{{ path('comment_index') }}">{{ path('comment_index') }}</a>
+        <a href="{{ path('fos_user_profile_show') }}">{{ path('fos_user_profile_show') }}</a>
+        <hr>
+    {% endif %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

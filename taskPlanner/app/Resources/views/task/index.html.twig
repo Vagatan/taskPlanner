@@ -33,11 +33,18 @@
                             <a href="{{ path('task_show', { 'id': task.id }) }}">show Task</a>
                         </li>
                         <li>
-                            <a href="{{ path('task_edit', { 'id': task.id }) }}">edit Task</a>
+                            {% if task.done %}
+                                <a>edit Task</a>
+                            {% else %}
+                                <a href="{{ path('task_edit', { 'id': task.id }) }}">edit Task</a>
+                            {% endif %}
+
                         </li>
                     </ul>
                 </td>
             </tr>
+
+
         {% endfor %}
         </tbody>
     </table>

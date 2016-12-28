@@ -24,10 +24,14 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findAll();
+        $loggedUser = $this->getUser();     //zmienna przyjmuje obiekt zalogowanego usera
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
+        //$tasks = $em->getRepository('TaskPlannerBundle:Task')->findAll();
+        //$comments = $em->getRepository('TaskPlannerBundle:Comment')->findByTask($id);
+
 
         return $this->render('task/index.html.twig', array(
-            'tasks' => $tasks,
+            'tasks' => $tasks//, 'comment' => $comments
         ));
     }
 

@@ -49,7 +49,11 @@
             <a href="{{ path('task_index') }}">Back to the Task list</a>
         </li>
         <li>
-            <a href="{{ path('task_edit', { 'id': task.id }) }}">Edit Task</a>
+            {% if task.done %}
+                <a>edit Task</a>
+            {% else %}
+                <a href="{{ path('task_edit', { 'id': task.id }) }}">edit Task</a>
+            {% endif %}
         </li>
         <li>
             {{ form_start(delete_form) }}
