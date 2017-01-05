@@ -12,25 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
-
-
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="category")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Task", mappedBy="category")
-     */
-    private $task;
-
-
-
-
-
     /**
      * @var int
      *
@@ -51,7 +32,7 @@ class Category
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -74,12 +55,25 @@ class Category
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
     }
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="category")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="category")
+     */
+    private $task;
+
     /**
      * Constructor
      */
@@ -104,7 +98,7 @@ class Category
     /**
      * Get user
      *
-     * @return \TaskPlannerBundle\Entity\User 
+     * @return \TaskPlannerBundle\Entity\User
      */
     public function getUser()
     {
@@ -137,7 +131,7 @@ class Category
     /**
      * Get task
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTask()
     {

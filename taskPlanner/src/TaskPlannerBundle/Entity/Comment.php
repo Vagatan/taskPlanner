@@ -12,21 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
-
-
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Task", inversedBy="Comments")
-     * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
-     */
-    private $task;
-
-
-
-
-
-
     /**
      * @var int
      *
@@ -47,7 +32,7 @@ class Comment
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -70,12 +55,18 @@ class Comment
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
         return $this->comment;
     }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Task", inversedBy="Comment")
+     * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
+     */
+    private $task;
 
     /**
      * Set task
@@ -93,7 +84,7 @@ class Comment
     /**
      * Get task
      *
-     * @return \TaskPlannerBundle\Entity\Task 
+     * @return \TaskPlannerBundle\Entity\Task
      */
     public function getTask()
     {
@@ -101,6 +92,8 @@ class Comment
     }
 
     public function __toString() {
-        return $this->task;
+        return $this->comment;
     }
+
 }
+

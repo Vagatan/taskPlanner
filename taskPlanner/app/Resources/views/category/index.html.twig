@@ -5,16 +5,14 @@
 
     <table>
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for category in categories %}
             <tr>
-                <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
                 <td>{{ category.name }}</td>
                 <td>
                     <ul>

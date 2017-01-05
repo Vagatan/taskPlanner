@@ -24,14 +24,27 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $loggedUser = $this->getUser();     //zmienna przyjmuje obiekt zalogowanego usera
-        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
-        //$tasks = $em->getRepository('TaskPlannerBundle:Task')->findAll();
-        //$comments = $em->getRepository('TaskPlannerBundle:Comment')->findByTask($id);
+        $loggedUser = $this->getUser();
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser); //metoda 'dynamiczna' przyjmuje obiekt na zalogowanego usera
+        //dump($loggedUser.$this->getUser());
+
+        /*
+         * przerobić to na 'styl tablicowy' będzie bardziej elegancko
+            (prezentacja 12.04 str 39)
+         */
+
+        $tasksUnfinished = $em->getRepository('TaskPlannerBundle:Task')->findByDone(false); //metoda 'dynamiczna' pobierająca obiekty z niezakończonym taskiem
+        $tasksUnf = 0;    //zmienna pomocnicza - licznik niezakończonych tasków
+        foreach($tasksUnfinished as $tc){
+            if($tc->getUser() == $loggedUser){
+                //dump($tc);
+                $tasksUnf++;
+            }
+        }
 
 
         return $this->render('task/index.html.twig', array(
-            'tasks' => $tasks//, 'comment' => $comments
+            'tasks' => $tasks, 'user'=>$loggedUser, 'tasksUnfinished'=>$tasksUnf//, 'comment' => $comments
         ));
     }
 
@@ -44,8 +57,11 @@ class TaskController extends Controller
     public function newAction(Request $request)
     {
         $task = new Task();
+
+        
         $form = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();

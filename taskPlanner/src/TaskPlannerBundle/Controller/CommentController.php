@@ -6,6 +6,9 @@ use TaskPlannerBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use TaskPlannerBundle\Entity\Task;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 /**
  * Comment controller.
@@ -23,8 +26,10 @@ class CommentController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $loggedUser = $this->getUser();
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
 
-        $comments = $em->getRepository('TaskPlannerBundle:Comment')->findAll();
+        $comments = $em->getRepository('TaskPlannerBundle:Comment')->findByTask($tasks);
 
         return $this->render('comment/index.html.twig', array(
             'comments' => $comments,
@@ -39,11 +44,26 @@ class CommentController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $comment = new Comment();
-        $form = $this->createForm('TaskPlannerBundle\Form\CommentType', $comment);
+        $loggedUser = $this->getUser();
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
+
+        $form = $this->createFormBuilder($comment)
+            ->add('comment','text')
+            ->add('task', 'entity', array(
+                    'class'=>'TaskPlannerBundle:Task',
+                    'choices' => $tasks,
+                ))
+
+            ->getForm();
+
         $form->handleRequest($request);
 
+        //dump($comment);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush($comment);

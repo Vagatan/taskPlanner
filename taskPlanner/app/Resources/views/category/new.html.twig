@@ -4,13 +4,12 @@
     <h1>Category creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    {{ form_widget(form) }}
     {{ form_end(form) }}
 
     <ul>
         <li>
-            <a href="{{ path('category_index') }}">Back to the list</a>
+            <a href="{{ path('category_index') }}">Back to the Category list</a>
         </li>
     </ul>
 {% endblock %}

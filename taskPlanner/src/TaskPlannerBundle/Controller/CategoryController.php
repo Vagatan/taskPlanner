@@ -24,7 +24,8 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $categories = $em->getRepository('TaskPlannerBundle:Category')->findAll();
+        $loggedUser = $this->getUser();     //zmienna przyjmuje obiekt zalogowanego usera
+        $categories = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);
 
         return $this->render('category/index.html.twig', array(
             'categories' => $categories,
@@ -40,16 +41,25 @@ class CategoryController extends Controller
     public function newAction(Request $request)
     {
         $category = new Category();
-        $form = $this->createForm('TaskPlannerBundle\Form\CategoryType', $category);
+
+        $form = $this->createFormBuilder($category)
+            ->add('name','text')
+            ->add('save', 'submit', array('label' => 'Create Category'))
+            ->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $category->setUser($this->getUser());       //ustawiam aktualnie zalogowanego użytkownika jako tego który stworzył komentarz, analogicznie do zrobienia w pozostałych formularzach
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush($category);
 
             return $this->redirectToRoute('category_show', array('id' => $category->getId()));
         }
+
 
         return $this->render('category/new.html.twig', array(
             'category' => $category,
@@ -81,13 +91,18 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
+
         $deleteForm = $this->createDeleteForm($category);
-        $editForm = $this->createForm('TaskPlannerBundle\Form\CategoryType', $category);
+
+
+        $editForm = $this->createFormBuilder($category)
+            ->add('name','text')
+            ->getForm();
+
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('category_edit', array('id' => $category->getId()));
         }
 
