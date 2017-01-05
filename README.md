@@ -11,5 +11,5 @@ podstawowe założenia projektowe:
 - użytkownik może dodawać / usuwać / zmieniać komentarze do swoich zadań
 
 do zrobienia pozostało:
-- implementacj komendy konsolowej wysyłającej użytkownikom powiadomienia o zaległych zadaniach do realizacji
+- implementacja komendy konsolowej wysyłającej użytkownikom powiadomienia o zaległych zadaniach do realizacji
 - ostylowanie aplikacji (opcja -> bootstrap)
