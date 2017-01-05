@@ -58,10 +58,33 @@ class TaskController extends Controller
     {
         $task = new Task();
 
-        
-        $form = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
+
+
+
+        $em = $this->getDoctrine()->getManager();
+        $loggedUser = $this->getUser();
+        $tasks = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);
+
+
+        $form = $this->createFormBuilder($task)
+            ->add('name','text')
+            ->add('description','text')
+            ->add('done')
+            ->add('dueDate')
+            ->add('category', 'entity', array(
+                'class'=>'TaskPlannerBundle:Category',
+                'choices' => $tasks,
+            ))
+
+            ->getForm();
+
         $form->handleRequest($request);
 
+
+/*
+        $form = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
+        $form->handleRequest($request);
+*/
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -104,8 +127,19 @@ class TaskController extends Controller
     public function editAction(Request $request, Task $task)
     {
         $deleteForm = $this->createDeleteForm($task);
+    /*
         $editForm = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
+    */
+        $editForm =  $this->createFormBuilder($task)
+        ->add('name')
+        ->add('description')
+        ->add('done')
+        ->add('dueDate')
+        ->getForm();
+
         $editForm->handleRequest($request);
+
+        //dump($editForm);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
