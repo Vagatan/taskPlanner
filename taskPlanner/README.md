@@ -2,7 +2,7 @@ taskPlanner
 ===========
 
 podstawowe założenia projektowe:
-- zarządzenie kontami urzytkowników poprzez implementację FOSUserBundle
+- zarządzenie kontami użytkowników poprzez implementację FOSUserBundle
 - użytkownicy widzą tylko dane wprowadzone przez siebie
 - każdy użytkownik może zdefiniować kategorie tematyczne, a następnie przypisywać do nich zadania.
 - użytkownik może edytować swoje zadania (chyba że zostały zakończone)
