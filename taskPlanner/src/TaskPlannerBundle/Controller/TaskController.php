@@ -5,7 +5,8 @@ namespace TaskPlannerBundle\Controller;
 use TaskPlannerBundle\Entity\Task;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Task controller.
@@ -14,6 +15,42 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
  */
 class TaskController extends Controller
 {
+
+
+    /**
+     * Checking unfinished tasks and sending e-mail to users
+     *
+     * @Route("/sendemails", name="task_check")
+     * @Method("GET")
+     */
+    public function sendEmailAction(){                          //skończyć: poprawić to spagetti, twig, metoda konsolowa(?)
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('TaskPlannerBundle:User')->findAll();
+        foreach($users as $usa){
+            $tl = $em->getRepository('TaskPlannerBundle:Task')->findByUser($usa);
+            foreach($tl as $t){
+                if(!$t->getDone()){
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject('Witaj użytkowniku')
+                        ->setFrom('mmatyska75@gmail.com')
+                        ->setTo($t->getUser()->getEmail())
+                        ->setBody('You have unfinished tasks');
+                    ;
+
+                    $this->get('mailer')->send($message);
+                }
+            }
+        }
+
+        return $this->render('task/index.html.twig', array(
+
+        ));
+
+
+    }
+
+
+
     /**
      * Lists all task entities.
      *
@@ -25,23 +62,19 @@ class TaskController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $loggedUser = $this->getUser();
-        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser); //metoda 'dynamiczna' przyjmuje obiekt na zalogowanego usera
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser); //metoda 'dynamiczna' przyjmuje taski na zalogowanego usera
         //dump($loggedUser.$this->getUser());
-
         /*
          * przerobić to na 'styl tablicowy' będzie bardziej elegancko
             (prezentacja 12.04 str 39)
          */
-
         $tasksUnfinished = $em->getRepository('TaskPlannerBundle:Task')->findByDone(false); //metoda 'dynamiczna' pobierająca obiekty z niezakończonym taskiem
         $tasksUnf = 0;    //zmienna pomocnicza - licznik niezakończonych tasków
         foreach($tasksUnfinished as $tc){
             if($tc->getUser() == $loggedUser){
-                //dump($tc);
                 $tasksUnf++;
             }
         }
-
 
         return $this->render('task/index.html.twig', array(
             'tasks' => $tasks, 'user'=>$loggedUser, 'tasksUnfinished'=>$tasksUnf//, 'comment' => $comments
@@ -57,9 +90,6 @@ class TaskController extends Controller
     public function newAction(Request $request)
     {
         $task = new Task();
-
-
-
 
         $em = $this->getDoctrine()->getManager();
         $loggedUser = $this->getUser();
@@ -189,6 +219,4 @@ class TaskController extends Controller
             ->getForm()
         ;
     }
-
-
 }

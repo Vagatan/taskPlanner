@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+//        $queryTest = $em->createQuery('
+//          SELECT u FROM TaskPlannerBundle:User u, TaskPlannerBundle:Task t LEFT JOIN t.user
+//        ');
+//        $res = $queryTest->getResult();
+//        dump($res);
 }
