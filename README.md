@@ -9,7 +9,8 @@ podstawowe założenia projektowe:
 - użytkownik może wyświetlić swoje zadania (zakończone i niezakończone) (w tym liczba komentarzy przy każdym z zadań
                                                                    na liście.)
 - użytkownik może dodawać / usuwać / zmieniać komentarze do swoich zadań
+- komenda konsolowa wysyłająca użytkownikom powiadomienia o zaległych zadaniach do realizacji (do umieszczenia np w cronie)
 
 do zrobienia pozostało:
-- implementacja komendy konsolowej wysyłającej użytkownikom powiadomienia o zaległych zadaniach do realizacji
 - ostylowanie aplikacji (opcja -> bootstrap)
+- testy
