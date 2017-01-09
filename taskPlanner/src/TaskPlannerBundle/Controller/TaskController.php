@@ -123,9 +123,10 @@ class TaskController extends Controller
     public function editAction(Request $request, Task $task)
     {
         $deleteForm = $this->createDeleteForm($task);
-    /*
-        $editForm = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
-    */
+        dump($task->getUser());
+
+//        $editForm = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
+
         $editForm =  $this->createFormBuilder($task)
         ->add('name')
         ->add('description')

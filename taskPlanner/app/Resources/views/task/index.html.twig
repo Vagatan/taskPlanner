@@ -97,10 +97,10 @@
             <tr>
                 <td>{{ task.name }}</td>
                 <td>{{ task.description }}</td>
-                <td><a href="{{ path('task_show', {'id': task.id}) }}">{{ task.category }}</a></td>
+                <td>{{ task.category }}</td>
                 <td>{% if task.done %}Yes{% else %}No{% endif %}</td>
                 <td>{% if task.dueDate %}{{ task.dueDate|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ task.comment.count }}</td>
+                <td><a href="{{ path('task_show', {'id': task.id}) }}">{{ task.comment.count }}</a></td>
                 <td>
                     <ul>
                         <li>
