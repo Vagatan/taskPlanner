@@ -13,15 +13,12 @@ class EmailTasksCommand extends Command
     protected function configure()
     {
         $this
-            // the name of the command (the part after "bin/console")
             ->setName('app:create-message')
-
             // the short description shown while running "php bin/console list"
-            ->setDescription('Creates new users.')
-
+            ->setDescription('Sending emails..')
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp("This command allows you to create users...")
+            ->setHelp("This command sending emails about tasks to users...")
         ;
     }
 
