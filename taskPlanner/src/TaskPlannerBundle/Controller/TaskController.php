@@ -122,21 +122,25 @@ class TaskController extends Controller
      */
     public function editAction(Request $request, Task $task)
     {
+        $em = $this->getDoctrine()->getManager();
+        $loggedUser = $this->getUser();
+        $tasks = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);
+
         $deleteForm = $this->createDeleteForm($task);
-        dump($task->getUser());
 
-//        $editForm = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
+        $editForm = $this->createFormBuilder($task)
+            ->add('name','text')
+            ->add('description','text')
+            ->add('done')
+            ->add('dueDate')
+            ->add('category', 'entity', array(
+                'class'=>'TaskPlannerBundle:Category',
+                'choices' => $tasks,
+            ))
 
-        $editForm =  $this->createFormBuilder($task)
-        ->add('name')
-        ->add('description')
-        ->add('done')
-        ->add('dueDate')
-        ->getForm();
+            ->getForm();
 
         $editForm->handleRequest($request);
-
-        //dump($editForm);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
