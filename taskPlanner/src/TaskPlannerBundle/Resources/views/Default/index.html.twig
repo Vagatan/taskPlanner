@@ -5,5 +5,5 @@
     <a href="{{ path('fos_user_profile_show') }}">{{ path('fos_user_profile_show') }}</a>
     (logged as {{ app.user.username }} )
 {% else %}
-    zaloguj się!
+    <a href="/login">zaloguj się!</a>
 {% endif %}

@@ -101,8 +101,24 @@ class CommentController extends Controller
      */
     public function editAction(Request $request, Comment $comment)
     {
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $loggedUser = $this->getUser();
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
+
+        $editForm = $this->createFormBuilder($comment)
+            ->add('comment','text')
+            ->add('task', 'entity', array(
+                'class'=>'TaskPlannerBundle:Task',
+                'choices' => $tasks,
+            ))
+
+            ->getForm();
+
         $deleteForm = $this->createDeleteForm($comment);
-        $editForm = $this->createForm('TaskPlannerBundle\Form\CommentType', $comment);
+        //$editForm = $this->createForm('TaskPlannerBundle\Form\CommentType', $comment);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
