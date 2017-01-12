@@ -1,9 +1,6 @@
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-    <a href="{{ path('category_index') }}">{{ path('category_index') }}</a>
-    <a href="{{ path('task_index') }}">{{ path('task_index') }}</a>
-    <a href="{{ path('comment_index') }}">{{ path('comment_index') }}</a>
-    <a href="{{ path('fos_user_profile_show') }}">{{ path('fos_user_profile_show') }}</a>
-    (logged as {{ app.user.username }} )
-{% else %}
-    <a href="/login">zaloguj się!</a>
-{% endif %}
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <h1>Witaj {{ app.user.username }}</h1>
+    {% endif %}
+{% endblock %}

@@ -8,15 +8,23 @@
 
     </head>
     <body>
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        <a href="{{ path('category_index') }}">{{ path('category_index') }}</a>
-        <a href="{{ path('task_index') }}">{{ path('task_index') }}</a>
-        <a href="{{ path('comment_index') }}">{{ path('comment_index') }}</a>
-        <a href="{{ path('fos_user_profile_show') }}">{{ path('fos_user_profile_show') }}</a>
-        (logged as {{ app.user.username }} )
-        <hr>
-    {% endif %}
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="{{ path('category_index') }}">{{ path('category_index') }}</a></li>
+                    <li role="presentation"><a href="{{ path('task_index') }}">{{ path('task_index') }}</a></li>
+                    <li role="presentation"><a href="{{ path('comment_index') }}">{{ path('comment_index') }}</a></li>
+                    <li role="presentation"><a href="{{ path('fos_user_profile_show') }}">{{ path('fos_user_profile_show') }}</a></li>
+                </ul>
+                (logged as {{ app.user.username }} )
+            {% else %}
+                <a href="/login">zaloguj się!</a>
+            {% endif %}
+                {% block body %}{% endblock %}
+                {% block javascripts %}{% endblock %}
+            </div>
+        </div>
     </body>
 </html>
