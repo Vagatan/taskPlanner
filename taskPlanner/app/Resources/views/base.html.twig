@@ -8,23 +8,41 @@
 
     </head>
     <body>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <div class="jumbotron text-center">
+        <h1>Task Planner v 1.0.</h1>
+        <p>zaplanuj... zrób... zapomnij...</p>
+    </div>
 
-                <ul class="nav nav-pills">
-                    <li role="presentation" class="active"><a href="{{ path('category_index') }}">{{ path('category_index') }}</a></li>
-                    <li role="presentation"><a href="{{ path('task_index') }}">{{ path('task_index') }}</a></li>
-                    <li role="presentation"><a href="{{ path('comment_index') }}">{{ path('comment_index') }}</a></li>
-                    <li role="presentation"><a href="{{ path('fos_user_profile_show') }}">{{ path('fos_user_profile_show') }}</a></li>
-                </ul>
-                (logged as {{ app.user.username }} )
-            {% else %}
-                <a href="/login">zaloguj się!</a>
-            {% endif %}
-                {% block body %}{% endblock %}
-                {% block javascripts %}{% endblock %}
+
+
+            <div class="col-md-2">
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                            <ul class="nav nav-tabs  nav-stacked">
+                                <li role="presentation"><a href="{{ path('category_index') }}">Category</a></li>
+                                <li role="presentation"><a href="{{ path('task_index') }}">Task</a></li>
+                                <li role="presentation"><a href="{{ path('comment_index') }}">Comment</a></li>
+                                <li role="presentation"><a href="{{ path('fos_user_profile_show') }}">User</a></li>
+                            </ul>
+
+                            <span>(logged in as {{ app.user.username }} )</span>
+
+                        {% else %}
+                            <a href="/login">zaloguj się!</a>
+                        {% endif %}
+
             </div>
-        </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10">
+                    {% block body %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+             <div class="panel-footer  text-center">pogróżki / pochwały... pisz... <a href=""><span class="glyphicon glyphicon-envelope"></span></a></div>
+        {% block javascripts %}{% endblock %}
+
+
+
     </body>
 </html>

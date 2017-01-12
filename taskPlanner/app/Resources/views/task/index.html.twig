@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <h1>Tasks list</h1>
-    ( logged as {{ user.username }} with {{ tasksUnfinished }} active tasks from {{ tasks|length }} tasks)
+    <span>( logged in as {{ user.username }} with {{ tasksUnfinished }} active tasks from {{ tasks|length }}
+        tasks)</span>
 
     <table class="table">
         <thead>
         <tr>
-            <th>Name</th>
+            <th>Task name</th>
             <th>Description</th>
             <th>Category</th>
             <th>Done</th>
@@ -25,26 +27,16 @@
                 <td>{{ task.category }}</td>
                 <td>{% if task.done %}Yes{% else %}No{% endif %}</td>
                 <td>{% if task.dueDate %}{{ task.dueDate|date('Y-m-d') }}{% endif %}</td>
-                <td><a href="{{ path('task_show', {'id': task.id}) }}">{{ task.comment.count }}</a></td>
+                <td><a class="badge badge-default badge-pill"
+                       href="{{ path('task_show', {'id': task.id}) }}">{{ task.comment.count }}</a></td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('comment_new', { 'task_id': task.id }) }}">add Comment</a>
-                        </li>
-
-
-                        <li>
-                            <a href="{{ path('task_show', { 'id': task.id }) }}">show Task</a>
-                        </li>
-                        <li>
-                            {% if task.done %}
-                                <a>edit Task</a>
-                            {% else %}
-                                <a href="{{ path('task_edit', { 'id': task.id }) }}">edit Task</a>
-                            {% endif %}
-
-                        </li>
-                    </ul>
+                    <a href="{{ path('comment_new', { 'task_id': task.id }) }}">add Comment</a> /
+                    <a href="{{ path('task_show', { 'id': task.id }) }}">show Task</a> /
+                    {% if task.done %}
+                        edit Task
+                    {% else %}
+                        <a href="{{ path('task_edit', { 'id': task.id }) }}">edit Task</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
@@ -57,4 +49,6 @@
         </li>
 
     </ul>
+
+
 {% endblock %}

@@ -2,5 +2,6 @@
 {% block body %}
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <h1>Witaj {{ app.user.username }}</h1>
+        <span>masz {{ tasksUnf }} niezakończone zadania!</span>
     {% endif %}
 {% endblock %}
