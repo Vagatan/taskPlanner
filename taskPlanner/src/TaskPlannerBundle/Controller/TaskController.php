@@ -36,15 +36,17 @@ class TaskController extends Controller
             (prezentacja 12.04 str 39)
          */
         $tasksUnfinished = $em->getRepository('TaskPlannerBundle:Task')->findByDone(false); //metoda 'dynamiczna' pobierająca obiekty z niezakończonym taskiem
-        $tasksUnf = 0;    //zmienna pomocnicza - licznik niezakończonych tasków
-        foreach($tasksUnfinished as $tc){
+
+        $tasksUnf = 0;                              //zmienna pomocnicza - licznik niezakończonych tasków,
+        foreach($tasksUnfinished as $tc){           // niezbyt to ładne ale chcę jak najmniej robić w twigu (twig ma tylko prezentować to co dostaje)
             if($tc->getUser() == $loggedUser){
                 $tasksUnf++;
             }
         }
 
+        //do twigu wysyłane są: taski danego usera, zalogowany user, ilość niezakończonych tasków
         return $this->render('task/index.html.twig', array(
-            'tasks' => $tasks, 'user'=>$loggedUser, 'tasksUnfinished'=>$tasksUnf//, 'comment' => $comments
+            'tasks' => $tasks, 'user'=>$loggedUser, 'tasksUnfinished'=>$tasksUnf
         ));
     }
 
@@ -60,23 +62,21 @@ class TaskController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $loggedUser = $this->getUser();
-        $tasks = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);
+        $tasks = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);     //lista kategorii stworzonych przez danego usera
 
-        //////////////////////data
         $form = $this->createFormBuilder($task)
             ->add('name','text')
             ->add('description','text')
             ->add('done')
-            ->add('dueDate', DateType::class, array(
-                'widget' => 'single_text',
-
-                // do not render as type="date", to avoid HTML5 date pickers
-                'html5' => false,
-
-                // add a class that can be selected in JavaScript
-                'attr' => ['class' => 'js-datepicker'],
+            ->add('dueDate','date',array(
+                'years' => range(date('Y') , date('Y') + 5),        //todo
+                'months' => range(date('m') , date('m') + 12),      //takie ustawienie wymusza ustawienia kalendarza od aktualnej daty w 'górę'
+                'days' => range(date('d') , date('m') )             //to jeszcze do przerobienia bo na bank jest sensowniejszy sposób..
             ))
-            ->add('category', 'entity', array(
+//            ->add('dueDate', DateType::class, [                    //todo datepicker, stąd ta modyfikacja tego pola
+//                'widget' => 'single_text'
+//            ])
+            ->add('category', 'entity', array(                      //pole zmodyfikowane - wysyła tylko kategorie danego użytkownika
                 'class'=>'TaskPlannerBundle:Category',
                 'choices' => $tasks,
             ))
@@ -85,12 +85,12 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-
+        //zakomentowany 'standardowy' createForm - czasem mi się przydaje do sprawdzania, więc nie usuwam ale nie jest już potrzebny
 /*
         $form = $this->createForm('TaskPlannerBundle\Form\TaskType', $task);
         $form->handleRequest($request);
 */
-
+        //dodanie (po walidacji) nowego tasku i przekierowanie do twigu wyświetlającego nowy task
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $task->setUser($this->getUser());
@@ -113,7 +113,7 @@ class TaskController extends Controller
      * @Route("/{id}", name="task_show")
      * @Method("GET")
      */
-    public function showAction(Task $task)
+    public function showAction(Task $task)                      //wyswietlenie danego taska - tu nic nie zmieniałem
     {
         $deleteForm = $this->createDeleteForm($task);
 
@@ -129,11 +129,12 @@ class TaskController extends Controller
      * @Route("/{id}/edit", name="task_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Task $task)
+    public function editAction(Request $request, Task $task)       //edycja konkretnego taska wybranego przez zalogowanego użytkownika
     {
+
         $em = $this->getDoctrine()->getManager();
         $loggedUser = $this->getUser();
-        $tasks = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);
+        $tasks = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser); //taski użytkownika
 
         $deleteForm = $this->createDeleteForm($task);
 
@@ -142,21 +143,22 @@ class TaskController extends Controller
             ->add('description','text')
             ->add('done')
             ->add('dueDate')
-            ->add('category', 'entity', array(
+            ->add('category', 'entity', array(                      //kategorie danego użytkownika
                 'class'=>'TaskPlannerBundle:Category',
                 'choices' => $tasks,
             ))
 
             ->getForm();
-
         $editForm->handleRequest($request);
 
+        //dodanie zaktualizowanych danych do bazy i przekierowanie
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('task_edit', array('id' => $task->getId()));
         }
 
+        //do twigu leci konkretny task, z uwzględnieniem kategorii tylko stworzonych przez użytkownika i usuwanie danego tasku
         return $this->render('task/edit.html.twig', array(
             'task' => $task,
             'edit_form' => $editForm->createView(),
@@ -170,7 +172,7 @@ class TaskController extends Controller
      * @Route("/{id}", name="task_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Task $task)
+    public function deleteAction(Request $request, Task $task)          //usuwanie tasków - nic nie zmieniałem
     {
         $form = $this->createDeleteForm($task);
         $form->handleRequest($request);
@@ -191,7 +193,7 @@ class TaskController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Task $task)
+    private function createDeleteForm(Task $task)                       //usuwanie tasków formularz - nic nie zmieniałem
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('task_delete', array('id' => $task->getId())))

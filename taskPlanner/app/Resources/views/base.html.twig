@@ -5,6 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/main.css') }}" />
 
     </head>
     <body>
@@ -12,8 +13,6 @@
         <h1>Task Planner v 1.0.</h1>
         <p>zaplanuj... zrób... zapomnij...</p>
     </div>
-
-
 
             <div class="col-md-2">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
@@ -39,16 +38,8 @@
                     </div>
                 </div>
             </div>
-             <div class="panel-footer  text-center">pogróżki / pochwały... pisz... <a href=""><span class="glyphicon glyphicon-envelope"></span></a></div>
-        {% block javascripts %}
-            <script>
-                $(document).ready(function() {
-                $('.js-datepicker').datepicker({
-                format: 'yyyy-mm-dd'
-                });
-                });
-            </script>
-        {% endblock %}
+             <div class="panel-footer  text-center"><span class="small">pogróżki / pochwały... pisz...</span> <a href=""><span class="glyphicon glyphicon-envelope"></span></a></div>
+        {% block javascripts %}{% endblock %}
 
 
 
