@@ -135,7 +135,8 @@ class Task
      * @param \DateTime $dueDate
      * @return Task
      */
-    public function setDueDate($dueDate)
+    //public function setDueDate($dueDate)
+    public function setDueDate(\DateTime $dueDate = null)
     {
         $this->dueDate = $dueDate;
 

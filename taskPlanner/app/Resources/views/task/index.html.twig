@@ -25,7 +25,7 @@
                 <td>{{ task.name }}</td>
                 <td>{{ task.description }}</td>
                 <td>{{ task.category }}</td>
-                <td>{% if task.done %}Yes{% else %}No{% endif %}</td>
+                <td>{% if task.done %}<span class="label label-success">Yes</span>{% else %}<span class="label label-warning">No</span>{% endif %}</td>
                 <td>{% if task.dueDate %}{{ task.dueDate|date('Y-m-d') }}{% endif %}</td>
                 <td><a class="badge badge-default badge-pill"
                        href="{{ path('task_show', {'id': task.id}) }}">{{ task.comment.count }}</a></td>

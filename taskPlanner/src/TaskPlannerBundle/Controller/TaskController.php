@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 /**
  * Task controller.
@@ -61,12 +62,20 @@ class TaskController extends Controller
         $loggedUser = $this->getUser();
         $tasks = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);
 
-
+        //////////////////////data
         $form = $this->createFormBuilder($task)
             ->add('name','text')
             ->add('description','text')
             ->add('done')
-            ->add('dueDate')
+            ->add('dueDate', DateType::class, array(
+                'widget' => 'single_text',
+
+                // do not render as type="date", to avoid HTML5 date pickers
+                'html5' => false,
+
+                // add a class that can be selected in JavaScript
+                'attr' => ['class' => 'js-datepicker'],
+            ))
             ->add('category', 'entity', array(
                 'class'=>'TaskPlannerBundle:Category',
                 'choices' => $tasks,

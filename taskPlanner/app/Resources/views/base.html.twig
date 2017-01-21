@@ -40,7 +40,15 @@
                 </div>
             </div>
              <div class="panel-footer  text-center">pogróżki / pochwały... pisz... <a href=""><span class="glyphicon glyphicon-envelope"></span></a></div>
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script>
+                $(document).ready(function() {
+                $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+                });
+                });
+            </script>
+        {% endblock %}
 
 
 

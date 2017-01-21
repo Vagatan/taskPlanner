@@ -1,22 +1,20 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-    <h1>Category edit</h1>
+    <div  class="col-md-4">
+        <h1>Category edit</h1>
+        {#}{ form_start(edit_form,{'attr': {'class': 'col-md-4'}}) }#}
+        {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+            <input type="submit" value="Edit Category" />
+        {{ form_end(edit_form) }}
 
-    {{ form_start(edit_form) }}
-    {{ form_widget(edit_form) }}
-    <input type="submit" value="Edit Category" />
-    {{ form_end(edit_form) }}
+        <br>
+        <a href="{{ path('category_index') }}">Back to the Category list</a>
 
-    <ul>
-        <li>
-            <a href="{{ path('category_index') }}">Back to the Category list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-            <input type="submit" value="Delete Category">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        {{ form_start(delete_form) }}
+            <input type="submit" value="Delete Category" class="btn btn-danger">
+        {{ form_end(delete_form) }}
+
+    </div>
 {% endblock %}
 

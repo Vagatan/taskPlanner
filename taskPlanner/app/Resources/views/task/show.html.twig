@@ -2,59 +2,64 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Task</h1>
+    <div  class="col-md-4">
+        <h1>Task</h1>
 
-    <table>
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ task.id }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ task.name }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ task.description }}</td>
-        </tr>
-        <tr>
-            <th>Done</th>
-            <td>{% if task.done %}Yes</td><br>
-            <td> {% else %}No{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Duedate</th>
-            <td>{% if task.dueDate %}{{ task.dueDate|date('Y-m-d') }}{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Category</th>
-            <td>{{ task.category }}</td>
-        </tr>
-        <tr>
-            <th>user</th>
-            <td>{{ task.user }}</td>
-        </tr>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ task.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ task.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ task.description }}</td>
+            </tr>
+            <tr>
+                <th>Done</th>
+                <td>{% if task.done %}Yes</td><br>
+                <td> {% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Duedate</th>
+                <td>{% if task.dueDate %}{{ task.dueDate|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>{{ task.category }}</td>
+            </tr>
+            <tr>
+                <th>user</th>
+                <td>{{ task.user }}</td>
+            </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <h3>Comments ({{ task.comment.count }})</h3>
-    {% for comment in task.comment %}
-       {{ comment.comment }}<br>
-    {% endfor %}
+        <h3>Comments ({{ task.comment.count }})</h3>
+        {% for comment in task.comment %}
+            <blockquote class="blockquote">
+                <p>{{ comment.comment }}</p>
+            </blockquote>
+        {% endfor %}
 
-    <hr>
+        <hr>
 
-    {% if task.done %}
-        <a>edit Task</a>
-    {% else %}
-        <a href="{{ path('task_edit', { 'id': task.id }) }}">edit Task</a>
-    {% endif %}
+        {% if task.done %}
+            <a>edit Task</a>
+        {% else %}
+            <a href="{{ path('task_edit', { 'id': task.id }) }}">edit Task</a>
+        {% endif %}
 
-    {{ form_start(delete_form) }}
-        <input type="submit" value="Delete Task">
-    {{ form_end(delete_form) }}
+        / <a href="{{ path('comment_new', { 'task_id': task.id }) }}">add Comment</a>
 
+        {{ form_start(delete_form) }}
+            <input type="submit" value="Delete Task" class="btn btn-danger"> <!--class="btn btn-link"-->
+        {{ form_end(delete_form) }}
+    </div>
 {% endblock %}
 
