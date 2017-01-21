@@ -3,9 +3,9 @@
 {% block body %}
 
     <h1>Tasks list</h1>
-    <span>( logged in as {{ user.username }} with {{ tasksUnfinished }} active tasks from {{ tasks|length }}
+    <span  class="small">( logged in as {{ user.username }} with {{ tasksUnfinished }} active tasks from {{ tasks|length }}
         tasks)</span>
-
+    <hr>
     <table class="table">
         <thead>
         <tr>

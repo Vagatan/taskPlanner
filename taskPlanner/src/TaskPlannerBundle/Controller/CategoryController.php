@@ -25,7 +25,7 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $loggedUser = $this->getUser();     //zmienna przyjmuje obiekt zalogowanego usera
-        $categories = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);
+        $categories = $em->getRepository('TaskPlannerBundle:Category')->findByUser($loggedUser);    //kategorie wybrane dla zalogowanego użytkownika
 
         return $this->render('category/index.html.twig', array(
             'categories' => $categories,
@@ -50,9 +50,9 @@ class CategoryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $category->setUser($this->getUser());       //ustawiam aktualnie zalogowanego użytkownika jako tego który stworzył komentarz, analogicznie do zrobienia w pozostałych formularzach
-
+                                                        //!!!!!!!!!! ważne miejsce...
+            $category->setUser($this->getUser());       //ustawiam aktualnie zalogowanego użytkownika jako tego który stworzył kategorię,
+                                                        // analogicznie zrobić w pozostałych formularzach
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush($category);
@@ -73,7 +73,7 @@ class CategoryController extends Controller
      * @Route("/{id}", name="category_show")
      * @Method("GET")
      */
-    public function showAction(Category $category)
+    public function showAction(Category $category)                  //wyświetlenie danej kategorii - nic nie zmieniałem
     {
         $deleteForm = $this->createDeleteForm($category);
 
@@ -89,11 +89,10 @@ class CategoryController extends Controller
      * @Route("/{id}/edit", name="category_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Category $category)
+    public function editAction(Request $request, Category $category)        //edycja kategorii - nic nie zmieniałem
     {
 
         $deleteForm = $this->createDeleteForm($category);
-
 
         $editForm = $this->createFormBuilder($category)
             ->add('name','text')
@@ -119,7 +118,7 @@ class CategoryController extends Controller
      * @Route("/{id}", name="category_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Category $category)
+    public function deleteAction(Request $request, Category $category)      //usuwanie kategorii - nic nie zmieniałem
     {
         $form = $this->createDeleteForm($category);
         $form->handleRequest($request);

@@ -10,7 +10,7 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      */
-    public function indexAction()
+    public function indexAction()           //kod tu dodany zwraca liczbę niezakończonych tasków zalogowanego użytkownika...
     {
         $em = $this->getDoctrine()->getManager();
 

@@ -7,6 +7,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\HttpFoundation\Response;
 
+//komenda konsolowa pozwalająca na wysyłanie mailem, informacji do użytkowników o niezakończonych zadaniach
+//można by to jeszcze to zmodyfikować co by wysyłało np treść danego tasku, ale na potrzeby 'warsztatowe' to teraz wystarczy
+
+//komendę konsolową można np dodać do crontaba lub odpalać ręcznie...
 class EmailTasksCommand extends ContainerAwareCommand
 {
     protected function configure()

@@ -26,10 +26,10 @@ class CommentController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $loggedUser = $this->getUser();
-        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
+        $loggedUser = $this->getUser();                     //zalogowany użytkownik
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);     //taski użytkownika
 
-        $comments = $em->getRepository('TaskPlannerBundle:Comment')->findByTask($tasks);
+        $comments = $em->getRepository('TaskPlannerBundle:Comment')->findByTask($tasks);    //wszystkie komentarze dla danego tasków użytkownika
 
         return $this->render('comment/index.html.twig', array(
             'comments' => $comments,
@@ -48,11 +48,11 @@ class CommentController extends Controller
 
         $comment = new Comment();
         $loggedUser = $this->getUser();
-        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);     //taski użytkownika
 
         $form = $this->createFormBuilder($comment)
             ->add('comment','text')
-            ->add('task', 'entity', array(
+            ->add('task', 'entity', array(                      //wszystkie taski stworzone przez użytkownika jako lista rozwijana
                     'class'=>'TaskPlannerBundle:Task',
                     'choices' => $tasks,
                 ))
@@ -61,9 +61,8 @@ class CommentController extends Controller
 
         $form->handleRequest($request);
 
-        //dump($comment);
+        //dodanie i walidacja nowego komentarza do tasku
         if ($form->isSubmitted() && $form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush($comment);
@@ -83,7 +82,7 @@ class CommentController extends Controller
      * @Route("/{id}", name="comment_show")
      * @Method("GET")
      */
-    public function showAction(Comment $comment)
+    public function showAction(Comment $comment)            //poszczególny komentarz - bez moich zmian
     {
         $deleteForm = $this->createDeleteForm($comment);
 
@@ -99,18 +98,18 @@ class CommentController extends Controller
      * @Route("/{id}/edit", name="comment_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Comment $comment)
+    public function editAction(Request $request, Comment $comment)      //edycja komentarza
     {
 
         $em = $this->getDoctrine()->getManager();
 
 
         $loggedUser = $this->getUser();
-        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser);
+        $tasks = $em->getRepository('TaskPlannerBundle:Task')->findByUser($loggedUser); //taski zalogowanego użytkownika
 
         $editForm = $this->createFormBuilder($comment)
             ->add('comment','text')
-            ->add('task', 'entity', array(
+            ->add('task', 'entity', array(                  //wszystkie taski stworzone przez użytkownika jako lista rozwijana
                 'class'=>'TaskPlannerBundle:Task',
                 'choices' => $tasks,
             ))
@@ -121,6 +120,7 @@ class CommentController extends Controller
         //$editForm = $this->createForm('TaskPlannerBundle\Form\CommentType', $comment);
         $editForm->handleRequest($request);
 
+        //walidacja i dodanie zmian do bazy
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
@@ -140,7 +140,7 @@ class CommentController extends Controller
      * @Route("/{id}", name="comment_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Comment $comment)
+    public function deleteAction(Request $request, Comment $comment)        //usunięcie - bez moich zmian
     {
         $form = $this->createDeleteForm($comment);
         $form->handleRequest($request);
